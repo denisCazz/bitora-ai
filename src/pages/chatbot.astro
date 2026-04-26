@@ -88,7 +88,7 @@ const sectors = [
           <!-- Glow halo -->
           <div class="absolute -inset-6 bg-aurora-gradient opacity-20 blur-4xl rounded-[2.5rem]"></div>
 
-          <div class="relative rounded-3xl border border-white/10 bg-surface-800/90 backdrop-blur-xl p-2 shadow-2xl shadow-brand-600/20 transform-gpu" style="transform: perspective(1400px) rotateY(-6deg) rotateX(2deg);">
+          <div class="chatbot-mockup relative rounded-3xl border border-white/10 bg-surface-800/90 backdrop-blur-xl p-2 shadow-2xl shadow-brand-600/20 transform-gpu overflow-hidden">
             <div class="rounded-2xl bg-surface-700/80 overflow-hidden">
               <!-- Chat header -->
               <div class="flex items-center gap-3 p-4 border-b border-white/5 bg-surface-800/80">
@@ -211,6 +211,11 @@ const sectors = [
     @keyframes typing {
       0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
       30% { transform: translateY(-3px); opacity: 1; }
+    }
+    @media (min-width: 768px) {
+      .chatbot-mockup {
+        transform: perspective(1400px) rotateY(-6deg) rotateX(2deg);
+      }
     }
   </style>
 

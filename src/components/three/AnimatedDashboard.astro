@@ -5,13 +5,12 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<div class={`relative ${className}`}>
+<div class={`relative overflow-hidden ${className}`}>
   <!-- Glow halo -->
   <div class="absolute -inset-8 bg-aurora-gradient opacity-20 blur-4xl rounded-full"></div>
 
   <div
     class="dashboard-3d relative rounded-2xl border border-white/10 bg-surface-800/90 backdrop-blur-xl shadow-2xl shadow-brand-600/30 overflow-hidden"
-    style="transform: perspective(1400px) rotateY(-12deg) rotateX(8deg) translateZ(0);"
   >
     <!-- Top bar -->
     <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-surface-700/60">
@@ -147,6 +146,11 @@ const { class: className = '' } = Astro.props;
   @media (prefers-reduced-motion: reduce) {
     .dashboard-3d {
       transform: none !important;
+    }
+  }
+  @media (min-width: 768px) {
+    .dashboard-3d {
+      transform: perspective(1400px) rotateY(-12deg) rotateX(8deg) translateZ(0);
     }
   }
 </style>
