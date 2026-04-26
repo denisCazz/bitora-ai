@@ -11,7 +11,7 @@ const {
   title,
   description = "AI concreta per PMI e aziende del territorio. Chatbot, automazioni, siti web AI-ready e gestionali intelligenti. Sede in Piemonte, serviamo tutta Italia.",
   canonical,
-  ogImage = "/og-default.png",
+  ogImage = "/icona.png",
   noindex = false,
 } = Astro.props;
 
@@ -27,7 +27,7 @@ const orgSchema = {
       "@id": `${siteUrl}#organization`,
       name: "Bitora AI",
       url: siteUrl,
-      logo: `${siteUrl}/favicon.svg`,
+      logo: `${siteUrl}/icona.png`,
       sameAs: ["https://bitora.it"],
       parentOrganization: {
         "@type": "Organization",
@@ -41,7 +41,7 @@ const orgSchema = {
       name: "Bitora AI",
       image: `${siteUrl}${ogImage}`,
       url: siteUrl,
-      telephone: "+39",
+      telephone: "+393514979670",
       address: {
         "@type": "PostalAddress",
         addressLocality: "Carmagnola",
@@ -97,13 +97,24 @@ const orgSchema = {
       :root {
         color-scheme: dark;
       }
-      html, body { height: 100%; }
+      html, body {
+        height: 100%;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: clip;
+      }
+      @supports not (overflow: clip) {
+        html, body { overflow-x: hidden; }
+      }
       body {
         background-color: #080810;
         background-image:
           radial-gradient(ellipse 70% 50% at 50% -10%, rgba(99,102,241,0.18), transparent 60%),
           radial-gradient(ellipse 60% 40% at 90% 110%, rgba(6,182,212,0.10), transparent 60%);
         background-attachment: fixed;
+      }
+      img, svg, canvas {
+        max-width: 100%;
       }
       ::selection {
         background-color: rgba(99,102,241,0.45);

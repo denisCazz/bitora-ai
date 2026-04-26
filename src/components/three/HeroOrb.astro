@@ -11,10 +11,10 @@ const { class: className = '', height = '520px' } = Astro.props;
   style={`height:${height}`}
   data-orb
 >
-  <!-- Fallback: gradient statico per prefers-reduced-motion / no-js -->
+  <!-- Fallback: gradient CSS (mobile + prefers-reduced-motion + no-JS) -->
   <div class="orb-fallback absolute inset-0 flex items-center justify-center pointer-events-none">
-    <div class="relative h-[320px] w-[320px] rounded-full bg-aurora-gradient opacity-80 blur-3xl"></div>
-    <div class="absolute h-[260px] w-[260px] rounded-full bg-brand-gradient opacity-90 animate-glow-pulse"></div>
+    <div class="relative h-[280px] w-[280px] sm:h-[340px] sm:w-[340px] rounded-full bg-aurora-gradient opacity-75 blur-3xl animate-glow-pulse"></div>
+    <div class="absolute h-[220px] w-[220px] sm:h-[270px] sm:w-[270px] rounded-full bg-brand-gradient opacity-90"></div>
   </div>
   <canvas class="orb-canvas absolute inset-0 h-full w-full hidden"></canvas>
 </div>
@@ -22,8 +22,11 @@ const { class: className = '', height = '520px' } = Astro.props;
 <script>
   import * as THREE from 'three';
 
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduce) {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Skip WebGL entirely on small screens (phones) — show CSS fallback instead
+  const isMobile = window.innerWidth < 768;
+
+  if (!prefersReduced && !isMobile) {
     document.querySelectorAll<HTMLElement>('[data-orb]').forEach(initOrb);
   }
 
@@ -35,18 +38,28 @@ const { class: className = '', height = '520px' } = Astro.props;
     canvas.classList.remove('hidden');
     fallback?.classList.add('opacity-0', 'transition-opacity', 'duration-700');
 
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Limit pixel ratio: max 2 on desktop, max 1.5 on tablet-ish
+    const isTablet = window.innerWidth < 1024;
+    const dpr = Math.min(window.devicePixelRatio, isTablet ? 1.5 : 2);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: !isTablet, // disable antialias on tablet to save GPU
+    });
+    renderer.setPixelRatio(dpr);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
     camera.position.z = 4;
 
-    const geometry = new THREE.IcosahedronGeometry(1.4, 64);
+    // Lower geometry detail on tablet
+    const detail = isTablet ? 32 : 64;
+    const geometry = new THREE.IcosahedronGeometry(1.4, detail);
 
     const uniforms = {
-      uTime: { value: 0 },
-      uMouse: { value: new THREE.Vector2(0, 0) },
+      uTime:   { value: 0 },
+      uMouse:  { value: new THREE.Vector2(0, 0) },
       uColorA: { value: new THREE.Color('#6366f1') },
       uColorB: { value: new THREE.Color('#06b6d4') },
       uColorC: { value: new THREE.Color('#a855f7') },
@@ -57,10 +70,9 @@ const { class: className = '', height = '520px' } = Astro.props;
       varying vec3 vPosition;
       uniform float uTime;
       uniform vec2 uMouse;
-      // simplex noise (Ashima, 3D)
       vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
       vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
-      vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);} 
+      vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
       vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
       float snoise(vec3 v){
         const vec2 C=vec2(1.0/6.0,1.0/3.0);
@@ -132,18 +144,13 @@ const { class: className = '', height = '520px' } = Astro.props;
       }
     `;
 
-    const material = new THREE.ShaderMaterial({
-      uniforms,
-      vertexShader: vert,
-      fragmentShader: frag,
-      transparent: true,
-    });
-
+    const material = new THREE.ShaderMaterial({ uniforms, vertexShader: vert, fragmentShader: frag, transparent: true });
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    // Outer halo
-    const haloGeo = new THREE.SphereGeometry(2.2, 64, 64);
+    // Outer halo — lower segments on tablet
+    const haloSegs = isTablet ? 32 : 64;
+    const haloGeo = new THREE.SphereGeometry(2.2, haloSegs, haloSegs);
     const haloMat = new THREE.ShaderMaterial({
       uniforms,
       side: THREE.BackSide,

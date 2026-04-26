@@ -63,7 +63,7 @@ Stima conservativa basata sulla composizione attuale (mobile, simulato 4G):
 | Form con un solo step, max 6 campi                      | OK |
 | Form con loading state e messaggio di successo          | OK |
 | Pagina `/grazie` come confirm + next steps              | OK |
-| Telefono / WhatsApp visibile in header e footer         | **TODO** placeholder `39XXXXXXXXXX` ancora presente |
+| Telefono / WhatsApp visibile in header e footer         | OK — numero reale `3514979670` su tutte le pagine |
 | Email diretta visibile in footer + contatti             | OK |
 | Bonus Piemonte / Voucher chiamato esplicitamente        | OK |
 | Casi studio con metriche numeriche                      | OK |
@@ -72,7 +72,7 @@ Stima conservativa basata sulla composizione attuale (mobile, simulato 4G):
 | FAQ in homepage                                         | OK |
 | Pulsante WhatsApp floating su mobile                    | **TODO** consigliato (FAB in basso a destra) |
 
-**Blocker conversion**: sostituire numero WhatsApp placeholder. `wa.me/39XXXXXXXXXX` è ovunque e rompe il flusso.
+Nessun blocker conversion rimasto.
 
 ---
 
@@ -82,7 +82,7 @@ Stima conservativa basata sulla composizione attuale (mobile, simulato 4G):
 | --------------------------------------------------------------- | ------ |
 | `<title>` univoco per pagina (max 60 char)                       | OK |
 | `<meta name="description">` univoca (max 160 char)               | OK |
-| Open Graph (`og:title`, `og:description`, `og:image`)            | OK / **TODO** og-default.png |
+| Open Graph (`og:title`, `og:description`, `og:image`)            | OK — fallback su `icona.png`. Creare `og-default.png` 1200×630 per social ottimali |
 | Twitter Card                                                    | OK |
 | `lang="it"` sul `<html>`                                        | OK |
 | URL parlanti, kebab-case                                        | OK |
@@ -96,11 +96,11 @@ Stima conservativa basata sulla composizione attuale (mobile, simulato 4G):
 | `sitemap.xml` accessibile                                       | OK (dinamica via `/sitemap.xml`) |
 | `robots.txt` accessibile e coerente                             | OK (dinamica via `/robots.txt`) |
 | Disallow `/api/` e `/grazie`                                    | OK |
-| Canonical                                                       | **TODO** consigliato in `Layout.astro` (`<link rel="canonical">`) |
+| Canonical                                                       | OK — `<link rel="canonical">` in `Layout.astro` |
 | Hreflang                                                        | non necessario (solo IT) |
-| 404 personalizzato                                              | **TODO** creare `src/pages/404.astro` |
+| 404 personalizzato                                              | OK — `src/pages/404.astro` con design system e quick-nav |
 
-**Blocker SEO**: caricare `og-default.png` (1200×630) in `public/`. Senza questo le condivisioni social mostrano fallback grigio.
+Nessun blocker SEO. Raccomandato creare `og-default.png` 1200×630 per condivisioni social ottimali.
 
 ---
 
@@ -135,10 +135,11 @@ Stima conservativa basata sulla composizione attuale (mobile, simulato 4G):
 | Hamburger menu funzionante                                  | OK |
 | Drawer chiude su click link / Esc / overlay                 | OK |
 | Form spaziato su mobile                                     | OK |
-| `HeroOrb` riducibile o nascondibile su mobile               | **TODO** consigliato `hidden md:block` |
-| Marquee non rompe layout su iPhone SE (375px)               | **TODO** verificare in produzione |
+| `HeroOrb` ottimizzato su mobile                             | OK — no WebGL sotto 768px, fallback CSS animato |
+| `HeroOrb` ottimizzato su tablet                             | OK — antialias off, detail 32, DPR max 1.5 |
+| Marquee non rompe layout su iPhone SE (375px)               | Da verificare in produzione |
 | `AnimatedDashboard` leggibile su mobile                     | OK (responsive) |
-| FAB WhatsApp                                                | **TODO** consigliato |
+| FAB WhatsApp                                                | consigliato post-lancio |
 
 ---
 
@@ -195,25 +196,16 @@ Stima conservativa basata sulla composizione attuale (mobile, simulato 4G):
 
 Lista pulita di azioni da fare PRIMA di puntare il DNS:
 
-1. **Sostituire `wa.me/39XXXXXXXXXX`** con il numero reale in:
-   - `src/components/Header.astro`
-   - `src/components/Footer.astro`
-   - `src/pages/index.astro`
-   - `src/pages/chatbot.astro`
-   - `src/pages/contatti.astro`
-   - `src/pages/piemonte.astro`
-   (basta ricerca globale: `grep -r "39XXXXXXXXXX" src/`)
-2. **Configurare Resend**:
+1. **Configurare Resend**:
    - Verificare dominio `ai.bitora.it` (DKIM / SPF / Return-Path)
    - Generare `RESEND_API_KEY` e salvarla in Coolify
    - Impostare `CONTACT_FROM=no-reply@ai.bitora.it` e `CONTACT_TO=info@bitora.it`
-3. **Caricare immagine OG**: `public/og-default.png` (1200×630, brand gradient + logo).
-4. **Test end-to-end form** in staging Coolify: invio → email arriva → redirect `/grazie`.
-5. **DNS**: puntare `ai.bitora.it` al VPS (CNAME o A record), abilitare SSL su Coolify.
-6. **Search Console + Bing Webmaster Tools**: verificare proprietà e inviare sitemap.
-7. **Analytics**: aggiungere snippet Umami / Plausible / GA4 in `Layout.astro`.
-8. **404 page**: creare `src/pages/404.astro` con stesso design system.
-9. **Lighthouse run reale** post-deploy e archiviare i 3 PDF (mobile + desktop) in `gtm/`.
+2. **Creare OG image**: `public/og-default.png` (1200×630, brand gradient + logo). Ora si usa `icona.png` come fallback.
+3. **Test end-to-end form** in staging Coolify: invio → email arriva → redirect `/grazie`.
+4. **DNS**: puntare `ai.bitora.it` al VPS (CNAME o A record), abilitare SSL su Coolify.
+5. **Search Console + Bing Webmaster Tools**: verificare proprietà e inviare sitemap.
+6. **Analytics**: aggiungere snippet Umami / Plausible / GA4 in `Layout.astro`.
+7. **Lighthouse run reale** post-deploy e archiviare i PDF (mobile + desktop) in `gtm/`.
 
 ## 11. Nice-to-have post lancio
 
@@ -231,11 +223,10 @@ Lista pulita di azioni da fare PRIMA di puntare il DNS:
 
 ## Riepilogo
 
-Il sito è **pronto al deploy** dal punto di vista codice/build. Ci sono 4 blocker reali pre-go-live:
+Il sito è **pronto al deploy**. I 3 blocker rimasti prima del go-live commerciale:
 
-1. Numero WhatsApp placeholder
-2. Configurazione Resend + dominio email
-3. Immagine `og-default.png`
-4. Test E2E del form in staging Coolify
+1. Configurazione Resend + dominio email verificato
+2. Immagine `og-default.png` 1200×630 (opzionale — `icona.png` usata come fallback)
+3. Test E2E del form in staging Coolify
 
 Il resto è "nice to have" o ottimizzazione iterativa post-lancio.

@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+import ParticleField from '../components/three/ParticleField.astro';
+
+export const prerender = false;
+---
+
+<Layout
+  title="Pagina non trovata"
+  description="La pagina che cerchi non esiste. Torna alla homepage di Bitora AI."
+  noindex={true}
+>
+  <Header />
+  <main id="main" class="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+    <ParticleField count={200} class="opacity-30" />
+    <div class="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 h-[500px] w-[800px] bg-aurora-gradient opacity-15 blur-4xl rounded-full"></div>
+
+    <div class="relative text-center px-4 py-24">
+      <!-- Big 404 -->
+      <div class="font-display text-[120px] sm:text-[180px] font-bold leading-none bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora select-none">
+        404
+      </div>
+
+      <h1 class="mt-2 font-display text-2xl sm:text-3xl font-bold text-white">
+        Pagina non trovata
+      </h1>
+      <p class="mt-4 text-slate-400 max-w-md mx-auto leading-relaxed">
+        Il link potrebbe essere scaduto o la pagina è stata spostata.
+        Torna alla homepage o contattaci direttamente.
+      </p>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <Button href="/" variant="primary" size="lg">
+          <Icon name="arrow" class="h-4 w-4 rotate-180" />
+          Torna alla homepage
+        </Button>
+        <Button href="/contatti" variant="secondary" size="lg">
+          Contattaci
+        </Button>
+      </div>
+
+      <!-- Quick nav -->
+      <div class="mt-16 grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg mx-auto text-left">
+        {[
+          { label: "Automazioni AI",    href: "/automazioni", icon: "zap"    },
+          { label: "Chatbot Aziendale", href: "/chatbot",     icon: "bot"    },
+          { label: "Siti Web",          href: "/siti-web",    icon: "globe"  },
+          { label: "Gestionali",        href: "/gestionali",  icon: "database"},
+          { label: "Formazione",        href: "/formazione",  icon: "graduation-cap" },
+          { label: "Casi Studio",       href: "/casi-studio", icon: "star"   },
+        ].map((link) => (
+          <a
+            href={link.href}
+            class="flex items-center gap-2.5 rounded-xl border border-white/5 bg-surface-800/60 backdrop-blur-sm px-4 py-3 text-sm text-slate-400 hover:text-white hover:border-brand-500/30 hover:bg-surface-800 transition-all duration-200"
+          >
+            <Icon name={link.icon} class="h-4 w-4 text-brand-300 shrink-0" />
+            <span>{link.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

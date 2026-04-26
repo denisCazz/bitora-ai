@@ -138,8 +138,8 @@ const faqSchema = {
           </Reveal>
         </div>
 
-        <!-- Hero Orb -->
-        <div class="lg:col-span-5 relative">
+        <!-- Hero Orb — desktop/tablet only. Mobile stays text-first and light. -->
+        <div class="hidden md:block lg:col-span-5 relative mt-6 lg:mt-0">
           <Reveal>
             <HeroOrb height="520px" />
           </Reveal>
@@ -574,10 +574,10 @@ const faqSchema = {
   <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
   <!-- ║  FINAL CTA                                                       ║ -->
   <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
-  <Section padding="xl" border={false}>
+  <Section padding="lg" border={false}>
     <Reveal>
-      <div class="relative overflow-hidden rounded-3xl border border-brand-500/30 bg-surface-800/40 backdrop-blur-md p-10 md:p-16">
-        <ParticleField count={250} class="opacity-40" />
+      <div class="relative overflow-hidden rounded-3xl border border-brand-500/30 bg-surface-800/40 backdrop-blur-md p-8 sm:p-12 md:p-16">
+        <ParticleField count={180} class="opacity-30" />
         <div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[800px] bg-aurora-gradient opacity-25 blur-4xl rounded-full"></div>
         <div class="relative text-center">
           <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-5">

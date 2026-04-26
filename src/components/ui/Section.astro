@@ -33,7 +33,7 @@ const variantMap = {
 
 <section
   id={id}
-  class={`relative ${border ? 'border-t border-white/5' : ''} ${padMap[padding]} ${variantMap[variant]} ${className}`}
+  class={`relative overflow-hidden ${border ? 'border-t border-white/5' : ''} ${padMap[padding]} ${variantMap[variant]} ${className}`}
 >
   {variant === 'glow' && (
     <div class="pointer-events-none absolute inset-0 overflow-hidden">
