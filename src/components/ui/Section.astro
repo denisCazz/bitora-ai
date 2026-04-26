@@ -1,0 +1,71 @@
+---
+interface Props {
+  id?: string;
+  variant?: 'default' | 'dark' | 'glow' | 'grid' | 'spotlight';
+  padding?: 'sm' | 'md' | 'lg' | 'xl';
+  border?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  variant = 'default',
+  padding = 'lg',
+  border = true,
+  class: className = '',
+} = Astro.props;
+
+const padMap = {
+  sm: 'py-12 sm:py-16',
+  md: 'py-16 sm:py-20',
+  lg: 'py-20 sm:py-24',
+  xl: 'py-24 sm:py-32',
+};
+
+const variantMap = {
+  default: '',
+  dark: 'bg-surface-800/40',
+  glow: 'relative',
+  grid: 'relative bg-grid-pattern bg-grid [background-position:center]',
+  spotlight: 'relative spotlight-section',
+};
+---
+
+<section
+  id={id}
+  class={`relative ${border ? 'border-t border-white/5' : ''} ${padMap[padding]} ${variantMap[variant]} ${className}`}
+>
+  {variant === 'glow' && (
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+      <div class="absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[900px] rounded-full bg-brand-500/10 blur-4xl"></div>
+    </div>
+  )}
+  {variant === 'grid' && (
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-surface-900 via-transparent to-surface-900"></div>
+  )}
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <slot />
+  </div>
+</section>
+
+{variant === 'spotlight' && (
+  <script>
+    document.querySelectorAll<HTMLElement>('.spotlight-section').forEach((el) => {
+      el.addEventListener('pointermove', (e) => {
+        const rect = el.getBoundingClientRect();
+        el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+        el.style.setProperty('--my', `${e.clientY - rect.top}px`);
+      });
+    });
+  </script>
+  <style>
+    .spotlight-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle 500px at var(--mx, 50%) var(--my, 50%), rgba(99,102,241,0.14), transparent 60%);
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+  </style>
+)}

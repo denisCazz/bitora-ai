@@ -1,0 +1,613 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/ui/Section.astro';
+import Card from '../components/ui/Card.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
+import Heading from '../components/ui/Heading.astro';
+import Marquee from '../components/ui/Marquee.astro';
+import Icon from '../components/ui/Icon.astro';
+import Reveal from '../components/ui/Reveal.astro';
+import HeroOrb from '../components/three/HeroOrb.astro';
+import ParticleField from '../components/three/ParticleField.astro';
+import AnimatedDashboard from '../components/three/AnimatedDashboard.astro';
+
+const services = [
+  { icon: "zap", title: "Automazioni AI", desc: "Email, preventivi, follow-up, documenti, fatture: automatizziamo i flussi ripetitivi che rubano ore ogni giorno.", href: "/automazioni", tag: "Risparmio immediato" },
+  { icon: "bot", title: "Chatbot Aziendale", desc: "Assistente su sito e WhatsApp addestrato su documenti, listini e procedure. Risponde 24/7, passa all'operatore quando serve.", href: "/chatbot", tag: "Disponibile H24" },
+  { icon: "globe", title: "Siti Web AI-ready", desc: "Siti professionali ottimizzati per ricerca AI e SEO locale, con contenuti generati intelligentemente e lead form integrati.", href: "/siti-web", tag: "Consegna rapida" },
+  { icon: "database", title: "CRM e Gestionali", desc: "I sistemi Bitora potenziati con AI: ricerca intelligente, riepiloghi automatici, suggerimenti commerciali, estrazione dati.", href: "/gestionali", tag: "Per clienti Bitora" },
+  { icon: "graduation-cap", title: "Formazione AI", desc: "Assessment, roadmap e workshop dal vivo per far capire al tuo team come usare concretamente l'AI, senza fronzoli.", href: "/formazione", tag: "Team pronto" },
+  { icon: "rocket", title: "AI Transition Pack", desc: "Pacchetto completo per chi parte da zero: analisi processi, progetto pilota, formazione e misura dei risultati.", href: "/formazione#transition-pack", tag: "Per chi inizia" },
+];
+
+const steps = [
+  { num: "01", title: "Diagnosi gratuita", desc: "30 minuti per mappare i processi della tua azienda e capire dove l'AI porta valore concreto." },
+  { num: "02", title: "Progetto pilota", desc: "Partiamo da 1-2 automazioni o dall'integrazione più urgente. Risultati misurabili in 2-4 settimane." },
+  { num: "03", title: "Ottimizzazione", desc: "Misuriamo KPI reali: ore risparmiate, richieste gestite, lead convertiti. Poi estendiamo." },
+  { num: "04", title: "Crescita progressiva", desc: "Aggiungiamo soluzioni solo dove ha senso. Nessun lock-in, nessuna promessa vuota." },
+];
+
+const stats = [
+  { value: "60-70%", label: "richieste gestite automaticamente dal chatbot" },
+  { value: "40%", label: "riduzione ticket ripetitivi con automazione intelligente" },
+  { value: "2-4 sett.", label: "per il primo sistema AI in produzione" },
+  { value: "6%", label: "PMI italiane usa già AI: il vantaggio è enorme" },
+];
+
+const faqs = [
+  { q: "Non sono una grande azienda, l'AI fa per me?", a: "Sì, anzi: le PMI sono quelle che beneficiano di più. Non servono team interni di data scientist. Le soluzioni che implementiamo partono da processi reali e si pagano in pochi mesi con il tempo risparmiato." },
+  { q: "Quanto costa avviare un progetto AI?", a: "Il pacchetto Start AI parte da poche centinaia di euro mensili. Il progetto pilota si dimensiona sul processo che vuoi automatizzare. La diagnosi iniziale è sempre gratuita." },
+  { q: "I miei dati sono al sicuro?", a: "Lavoriamo con architetture conformi GDPR. I dati del cliente non vengono usati per addestrare modelli di terze parti. Possiamo scegliere hosting italiano o europeo per i sistemi più critici." },
+  { q: "Posso partire senza avere già un CRM o un gestionale?", a: "Sì. Possiamo partire dai tuoi processi attuali (anche email e Excel) e introdurre AI gradualmente. Se poi vuoi un gestionale, Bitora lo costruisce su misura." },
+  { q: "Cosa succede se il sistema AI sbaglia?", a: "I sistemi che implementiamo hanno sempre un operatore umano nel loop per le decisioni critiche. Il chatbot passa all'umano, le automazioni hanno alert, i report sono verificabili." },
+  { q: "Posso accedere a bandi o incentivi pubblici?", a: "In alcuni casi sì: Transizione 5.0, voucher digitalizzazione Piemonte e bandi camerali possono coprire parte delle spese. Ti aiutiamo a capire se e come accedere, senza promesse che non possiamo garantire." },
+];
+
+const tools = ["OpenAI", "Anthropic Claude", "Make", "n8n", "Zapier", "HubSpot", "Notion", "Google Workspace", "WhatsApp Business", "Twilio", "Airtable", "Fatture in Cloud", "Pinecone", "Supabase"];
+
+const useCases = [
+  { emoji: "🍕", accent: "from-orange-500 to-amber-400", sector: "Ristorazione · Retail", problem: "Il titolare risponde manualmente a 40+ messaggi al giorno su orari, menù, prenotazioni. Il weekend è irraggiungibile.", solution: ["Chatbot WhatsApp con orari, menù e prenotazioni automatiche", "Conferme e promemoria via messaggio", "Risposta H24, passa al titolare solo per casi speciali"], result: "-3h/giorno · 95% richieste auto" },
+  { emoji: "📋", accent: "from-blue-500 to-cyan-400", sector: "Studio professionale", problem: "Preventivi manuali, follow-up dimenticati, nuovi clienti aspettano giorni. Il CRM è Excel.", solution: ["Modulo intake automatico con qualificazione lead", "Preventivo in bozza dall'AI in 5 minuti", "Follow-up automatici email + CRM"], result: "+35% lead convertiti · -70% tempo risposta" },
+  { emoji: "🔧", accent: "from-violet-500 to-indigo-400", sector: "B2B · Manutenzione", problem: "Ordini di servizio via email copiati a mano nel gestionale. Tecnici perdono tempo a cercare documentazione.", solution: ["Estrazione dati da email/PDF al gestionale", "Assistente AI su documenti tecnici e procedure", "Alert automatici scadenze manutenzione"], result: "-60% tempo ordini · zero errori trascrizione" },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<Layout title="Home">
+  <Header />
+  <main id="main">
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  HERO 3D                                                         ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <section class="relative overflow-hidden pt-12 pb-32 sm:pt-16 sm:pb-40">
+    <!-- Background layers -->
+    <div class="pointer-events-none absolute inset-0 bg-grid-pattern bg-grid opacity-[0.18] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000,transparent_70%)]"></div>
+    <ParticleField count={550} class="opacity-60" />
+    <div class="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[600px] bg-aurora-gradient opacity-[0.18] blur-4xl rounded-full"></div>
+
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+      <!-- Hero grid -->
+      <div class="grid lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-7 text-center lg:text-left">
+          <Reveal class="inline-flex">
+            <Badge variant="brand">Un progetto di Bitora · Sede in Piemonte</Badge>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <h1 class="mt-6 font-display font-bold text-white leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-[4rem]">
+              AI operativa<br class="hidden sm:block" />
+              per la
+              <span class="relative inline-block">
+                <span class="bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">tua azienda</span>
+                <svg class="absolute -bottom-2 left-0 w-full h-3 hidden sm:block" viewBox="0 0 200 8" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M2 6 Q 50 1 100 4 T 198 5" stroke="url(#u-grad)" stroke-width="2" fill="none" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0">
+                    <animate attributeName="stroke-dashoffset" from="100" to="0" dur="1.6s" begin="0.6s" fill="freeze"/>
+                  </path>
+                  <defs>
+                    <linearGradient id="u-grad" x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stop-color="#6366f1"/>
+                      <stop offset="100%" stop-color="#22d3ee"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
+              <span class="text-slate-400 text-3xl sm:text-4xl font-medium">.</span>
+            </h1>
+          </Reveal>
+
+          <Reveal delay={300}>
+            <p class="mt-7 max-w-xl mx-auto lg:mx-0 text-base sm:text-lg text-slate-400 leading-relaxed">
+              Non demo futuristiche. <strong class="text-slate-200 font-semibold">Chatbot, automazioni, siti web e gestionali intelligenti</strong>
+              che entrano nei tuoi processi reali e portano risultati misurabili in settimane.
+            </p>
+          </Reveal>
+
+          <Reveal delay={450}>
+            <div class="mt-9 flex flex-col sm:flex-row items-center lg:items-start lg:justify-start justify-center gap-4">
+              <Button href="/contatti" variant="primary" size="lg">
+                Prenota diagnosi AI gratuita
+                <Icon name="arrow" class="h-4 w-4" />
+              </Button>
+              <Button href="#soluzioni" variant="secondary" size="lg">
+                Scopri le soluzioni
+                <Icon name="arrow-down" class="h-4 w-4" />
+              </Button>
+            </div>
+          </Reveal>
+
+          <Reveal delay={600}>
+            <div class="mt-8 flex items-center justify-center lg:justify-start gap-6 text-xs text-slate-500">
+              <span class="flex items-center gap-1.5"><Icon name="check" class="h-3.5 w-3.5 text-green-400" /> Nessun impegno</span>
+              <span class="flex items-center gap-1.5"><Icon name="check" class="h-3.5 w-3.5 text-green-400" /> Risposta in 24h</span>
+              <span class="flex items-center gap-1.5"><Icon name="check" class="h-3.5 w-3.5 text-green-400" /> 30 minuti</span>
+            </div>
+          </Reveal>
+        </div>
+
+        <!-- Hero Orb -->
+        <div class="lg:col-span-5 relative">
+          <Reveal>
+            <HeroOrb height="520px" />
+          </Reveal>
+          <!-- Floating chips around orb -->
+          <div class="hidden lg:block absolute top-12 -left-4 animate-float">
+            <div class="flex items-center gap-2 rounded-xl border border-white/10 bg-surface-800/80 backdrop-blur-md px-3 py-2 shadow-glow-soft">
+              <span class="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse"></span>
+              <span class="text-[11px] text-slate-200 font-medium">Chatbot online · 184 lead</span>
+            </div>
+          </div>
+          <div class="hidden lg:block absolute bottom-16 -right-2 animate-float-slow">
+            <div class="flex items-center gap-2 rounded-xl border border-white/10 bg-surface-800/80 backdrop-blur-md px-3 py-2 shadow-glow-soft">
+              <Icon name="zap" class="h-3.5 w-3.5 text-electric-400" />
+              <span class="text-[11px] text-slate-200 font-medium">Automazione attiva</span>
+            </div>
+          </div>
+          <div class="hidden lg:block absolute top-32 right-6 animate-float">
+            <div class="flex items-center gap-2 rounded-xl border border-white/10 bg-surface-800/80 backdrop-blur-md px-3 py-2 shadow-glow-soft">
+              <Icon name="trending-up" class="h-3.5 w-3.5 text-accent-400" />
+              <span class="text-[11px] text-slate-200 font-medium">+42 ore/sett.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats counter strip -->
+      <div class="mt-24 lg:mt-32 rounded-3xl border border-white/10 bg-surface-800/50 backdrop-blur-md overflow-hidden">
+        <div class="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-brand-500/60 to-transparent"></div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-white/5">
+          {stats.map((s, i) => (
+            <Reveal delay={i * 100} class="relative p-6 sm:p-8 text-center lg:text-left">
+              <div class="font-display text-3xl sm:text-4xl font-bold bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">
+                {s.value}
+              </div>
+              <div class="mt-2 text-xs text-slate-400 leading-snug">{s.label}</div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  TOOLS MARQUEE                                                   ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <Section variant="default" padding="md" border={false}>
+    <Reveal class="mb-6">
+      <p class="text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+        Strumenti che integriamo nei tuoi processi
+      </p>
+    </Reveal>
+  </Section>
+  <Marquee items={tools} class="mb-12" />
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  WHY NOW · animated dashboard                                    ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <Section padding="xl" variant="grid">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <Reveal>
+        <Badge variant="electric">Il momento è adesso</Badge>
+        <h2 class="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+          Solo il <span class="text-electric-400 font-mono">6%</span> delle PMI italiane<br />
+          usa già l'AI.<br />
+          <span class="bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">Il vantaggio è ancora tutto da cogliere.</span>
+        </h2>
+        <div class="mt-7 space-y-4 text-slate-400 leading-relaxed">
+          <p>
+            Il mercato AI per le piccole e medie imprese è esploso. Chatbot, automazioni e gestionali intelligenti
+            erano "roba da grandi aziende" fino a due anni fa. Oggi costano quanto un abbonamento mensile e si ripagano
+            in pochi mesi.
+          </p>
+          <p>
+            Le aziende che partono ora costruiscono un vantaggio competitivo difficile da colmare. Quelle che aspettano
+            si troveranno a rincorrere concorrenti più veloci.
+          </p>
+        </div>
+        <div class="mt-8 grid grid-cols-2 gap-3">
+          {[
+            { icon: "clock", title: "Ore risparmiate", desc: "2-5h al giorno per collaboratore" },
+            { icon: "message", title: "Risposte H24", desc: "Anche di notte e nel weekend" },
+            { icon: "file-text", title: "Zero errori", desc: "Documenti elaborati senza digitazione" },
+            { icon: "trending-up", title: "Lead qualificati", desc: "Filtrati prima di arrivare al team" },
+          ].map((item) => (
+            <div class="flex items-start gap-3 rounded-xl border border-white/5 bg-surface-800/50 p-3.5">
+              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-500/15 text-brand-300">
+                <Icon name={item.icon} class="h-4 w-4" />
+              </div>
+              <div>
+                <div class="text-xs font-semibold text-white">{item.title}</div>
+                <div class="text-[11px] text-slate-400 leading-snug">{item.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Reveal>
+
+      <Reveal delay={200}>
+        <AnimatedDashboard />
+      </Reveal>
+    </div>
+  </Section>
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  SERVICES · tilt cards                                           ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <Section id="soluzioni" padding="xl" variant="glow">
+    <div class="text-center mb-16">
+      <Reveal>
+        <Heading eyebrow="Le nostre soluzioni" level={2} highlight="nella tua azienda">
+          Tutto ciò che serve per integrare l'AI
+        </Heading>
+      </Reveal>
+      <Reveal delay={150}>
+        <p class="mt-5 text-slate-400 max-w-xl mx-auto">
+          Ogni soluzione è costruita su misura partendo dai tuoi processi. Nessun pacchetto generico.
+        </p>
+      </Reveal>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {services.map((s, i) => (
+        <Reveal delay={i * 80}>
+          <a href={s.href} class="group/tilt block relative rounded-2xl border border-white/5 bg-surface-800/80 backdrop-blur-sm p-6 hover:border-brand-500/40 transition-all duration-300 will-change-transform overflow-hidden h-full">
+            <!-- Gradient hover wash -->
+            <span class="pointer-events-none absolute inset-0 opacity-0 group-hover/tilt:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_var(--mx,50%)_var(--my,50%),rgba(99,102,241,0.18),transparent_60%)]"></span>
+            <div class="relative">
+              <div class="flex items-start justify-between mb-5">
+                <div class="relative flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-300 group-hover/tilt:bg-brand-500/20 transition-colors">
+                  <span class="absolute inset-0 rounded-xl bg-brand-gradient opacity-0 group-hover/tilt:opacity-30 blur-md transition-opacity"></span>
+                  <Icon name={s.icon} class="relative h-5 w-5" />
+                </div>
+                <Badge variant="accent" dot={false} class="text-[10px]">{s.tag}</Badge>
+              </div>
+              <h3 class="text-base font-semibold text-white mb-2 font-display">{s.title}</h3>
+              <p class="text-sm text-slate-400 leading-relaxed">{s.desc}</p>
+              <div class="mt-6 flex items-center gap-1.5 text-xs font-semibold text-brand-300 group-hover/tilt:text-brand-200 transition-colors">
+                Scopri di più
+                <Icon name="arrow" class="h-3.5 w-3.5 transition-transform duration-300 group-hover/tilt:translate-x-1" />
+              </div>
+            </div>
+          </a>
+        </Reveal>
+      ))}
+    </div>
+  </Section>
+
+  <script>
+    // Service card spotlight follows cursor
+    document.querySelectorAll<HTMLElement>('#soluzioni .group\\/tilt').forEach((el) => {
+      let raf = 0;
+      el.addEventListener('pointermove', (e) => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const rect = el.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          el.style.setProperty('--mx', `${x}%`);
+          el.style.setProperty('--my', `${y}%`);
+          const tx = (x - 50) / 12;
+          const ty = (y - 50) / 12;
+          el.style.transform = `perspective(1000px) rotateY(${tx}deg) rotateX(${-ty}deg)`;
+        });
+      });
+      el.addEventListener('pointerleave', () => {
+        cancelAnimationFrame(raf);
+        el.style.transform = 'perspective(1000px) rotateY(0) rotateX(0)';
+      });
+    });
+  </script>
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  HOW IT WORKS · timeline                                         ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <Section variant="dark" padding="xl">
+    <div class="text-center mb-16">
+      <Reveal>
+        <Heading eyebrow="Come lavoriamo" level={2}>
+          Dal primo contatto al sistema in produzione
+        </Heading>
+      </Reveal>
+      <Reveal delay={120}>
+        <p class="mt-5 text-slate-400 max-w-xl mx-auto">
+          Un processo chiaro, senza tecnicismi inutili. Partiamo sempre da ciò che ti costa di più.
+        </p>
+      </Reveal>
+    </div>
+
+    <div class="relative grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <!-- progress line desktop -->
+      <div class="hidden lg:block absolute top-12 left-0 right-0 h-px bg-gradient-to-r from-brand-500/0 via-brand-500/40 to-brand-500/0"></div>
+      {steps.map((step, i) => (
+        <Reveal delay={i * 120}>
+          <div class="relative rounded-2xl border border-white/5 bg-surface-800/80 backdrop-blur-sm p-6 hover:border-brand-500/30 transition-colors h-full">
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-[11px] uppercase tracking-widest text-slate-500">step</span>
+              <span class="font-display text-3xl font-bold bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">{step.num}</span>
+            </div>
+            <h3 class="text-base font-semibold text-white mb-2 font-display">{step.title}</h3>
+            <p class="text-sm text-slate-400 leading-relaxed">{step.desc}</p>
+          </div>
+        </Reveal>
+      ))}
+    </div>
+  </Section>
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  PRICING                                                         ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <Section id="pacchetti" padding="xl" variant="glow">
+    <div class="text-center mb-16">
+      <Reveal>
+        <Heading eyebrow="I pacchetti" level={2} highlight="ha senso per te">
+          Parti da dove
+        </Heading>
+      </Reveal>
+      <Reveal delay={120}>
+        <p class="mt-5 text-slate-400 max-w-xl mx-auto">
+          Tre livelli di ingresso. Nessun lock-in. Scala solo quando vedi i risultati.
+        </p>
+      </Reveal>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6 items-stretch">
+      <!-- Start AI -->
+      <Reveal>
+        <div class="rounded-2xl border border-white/5 bg-surface-800/80 backdrop-blur-sm p-7 flex flex-col gap-5 h-full hover:border-brand-500/30 transition-colors">
+          <div>
+            <div class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400 mb-2">Start AI</div>
+            <div class="font-display text-3xl font-bold text-white">Da €490</div>
+            <div class="text-xs text-slate-500 mt-1">setup + €199/mese assistenza</div>
+          </div>
+          <p class="text-sm text-slate-400">Per chi vuole il primo risultato rapido. Ideale per negozi, studi professionali, attività locali.</p>
+          <ul class="space-y-2.5 flex-1">
+            {["Diagnosi processi (2h)", "1 automazione o mini-chatbot", "Integrazione email o WhatsApp", "Formazione team base (2h)", "Report mensile KPI"].map((item) => (
+              <li class="flex items-start gap-2 text-sm text-slate-300">
+                <Icon name="check" class="h-4 w-4 text-brand-300 mt-0.5 shrink-0" />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <Button href="/contatti?pack=start" variant="outline" size="md" class="w-full">Inizia con Start AI</Button>
+        </div>
+      </Reveal>
+
+      <!-- Operate AI · highlighted -->
+      <Reveal delay={140}>
+        <div class="relative rounded-2xl p-[1.5px] bg-aurora-gradient bg-[length:200%_200%] animate-aurora h-full">
+          <div class="rounded-2xl bg-surface-800 p-7 flex flex-col gap-5 h-full relative overflow-hidden">
+            <div class="absolute -inset-32 bg-brand-500/10 blur-4xl rounded-full pointer-events-none"></div>
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-gradient px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-glow-brand z-10">
+              Più scelto
+            </div>
+            <div class="relative">
+              <div class="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-300 mb-2">Operate AI</div>
+              <div class="font-display text-3xl font-bold text-white">Da €990</div>
+              <div class="text-xs text-slate-400 mt-1">setup + €399/mese assistenza e ottimizzazione</div>
+            </div>
+            <p class="relative text-sm text-slate-300">Per PMI con processi ripetitivi da automatizzare. Include chatbot, workflow e integrazione con sistemi esistenti.</p>
+            <ul class="relative space-y-2.5 flex-1">
+              {["Diagnosi completa (4h)", "Chatbot multicanale (sito + WhatsApp)", "3 automazioni workflow", "Integrazione CRM/email/gestionale", "Dashboard KPI personalizzata", "30 giorni ottimizzazione inclusi", "Formazione team avanzata"].map((item) => (
+                <li class="flex items-start gap-2 text-sm text-slate-200">
+                  <Icon name="check" class="h-4 w-4 text-accent-400 mt-0.5 shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div class="relative">
+              <Button href="/contatti?pack=operate" variant="primary" size="md" class="w-full">Inizia con Operate AI</Button>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+
+      <!-- Custom AI System -->
+      <Reveal delay={280}>
+        <div class="rounded-2xl border border-white/5 bg-surface-800/80 backdrop-blur-sm p-7 flex flex-col gap-5 h-full hover:border-brand-500/30 transition-colors">
+          <div>
+            <div class="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400 mb-2">Custom AI System</div>
+            <div class="font-display text-3xl font-bold text-white">Su preventivo</div>
+            <div class="text-xs text-slate-500 mt-1">progetto a corpo + supporto mensile</div>
+          </div>
+          <p class="text-sm text-slate-400">Per aziende strutturate o clienti Bitora che vogliono AI integrata nel gestionale, CRM o sistema custom.</p>
+          <ul class="space-y-2.5 flex-1">
+            {["Analisi architettura sistemi", "AI in gestionale/CRM Bitora", "Agenti autonomi su processi", "Estrattore dati da documenti", "Report e analisi predittive", "Supporto prioritario", "Compatibile bandi Transizione 5.0"].map((item) => (
+              <li class="flex items-start gap-2 text-sm text-slate-300">
+                <Icon name="check" class="h-4 w-4 text-brand-300 mt-0.5 shrink-0" />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <Button href="/contatti?pack=custom" variant="outline" size="md" class="w-full">Richiedi preventivo</Button>
+        </div>
+      </Reveal>
+    </div>
+
+    <p class="text-center text-xs text-slate-500 mt-10">
+      Tutti i prezzi IVA esclusa · La diagnosi iniziale è sempre gratuita e senza impegno.
+    </p>
+  </Section>
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  USE CASES                                                       ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <Section id="casi-uso" variant="dark" padding="xl">
+    <div class="text-center mb-16">
+      <Reveal>
+        <Heading eyebrow="Esempi concreti" level={2} highlight="in pratica">
+          Come funziona
+        </Heading>
+      </Reveal>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      {useCases.map((c, i) => (
+        <Reveal delay={i * 140}>
+          <article class="group relative rounded-2xl border border-white/5 bg-surface-800/80 backdrop-blur-sm overflow-hidden h-full hover:border-brand-500/30 transition-all hover:-translate-y-1 duration-300">
+            <div class={`h-1 w-full bg-gradient-to-r ${c.accent}`}></div>
+            <div class="p-6">
+              <div class="flex items-center gap-3 mb-5">
+                <span class="text-3xl">{c.emoji}</span>
+                <div>
+                  <div class="text-[10px] uppercase tracking-widest text-slate-500">Settore</div>
+                  <div class="text-sm font-semibold text-white">{c.sector}</div>
+                </div>
+              </div>
+              <div class="text-[11px] uppercase tracking-widest text-slate-500 mb-2">Problema</div>
+              <p class="text-sm text-slate-400 mb-5">{c.problem}</p>
+              <div class="text-[11px] uppercase tracking-widest text-slate-500 mb-2">Soluzione AI</div>
+              <ul class="space-y-2 mb-5">
+                {c.solution.map((s) => (
+                  <li class="flex items-start gap-2 text-sm text-slate-300">
+                    <span class="text-accent-400 mt-0.5">›</span>{s}
+                  </li>
+                ))}
+              </ul>
+              <div class="rounded-xl border border-white/5 bg-white/[0.03] p-3 text-xs text-slate-400">
+                <span class="text-white font-semibold">Risultato stimato:</span> {c.result}
+              </div>
+            </div>
+          </article>
+        </Reveal>
+      ))}
+    </div>
+
+    <div class="mt-12 text-center">
+      <Button href="/casi-studio" variant="ghost">
+        Vedi tutti i casi studio
+        <Icon name="arrow" class="h-4 w-4" />
+      </Button>
+    </div>
+  </Section>
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  PIEMONTE BONUS · spotlight                                      ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <Section variant="spotlight" padding="lg">
+    <Reveal>
+      <div class="relative overflow-hidden rounded-3xl border border-brand-500/20 bg-surface-800/60 backdrop-blur-md p-8 md:p-14">
+        <div class="pointer-events-none absolute -top-32 -right-32 h-[400px] w-[400px] rounded-full bg-brand-500/15 blur-4xl"></div>
+        <div class="pointer-events-none absolute -bottom-32 -left-32 h-[400px] w-[400px] rounded-full bg-accent-500/10 blur-4xl"></div>
+        <div class="relative grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <Badge variant="electric">Bonus & incentivi</Badge>
+            <h2 class="mt-5 font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight">
+              Potrebbe esserci un contributo<br />
+              pubblico per il tuo<br />
+              <span class="bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">progetto AI.</span>
+            </h2>
+            <p class="mt-5 text-slate-400 text-sm leading-relaxed">
+              Il Piano Transizione 5.0 prevede crediti d'imposta fino al 45% per investimenti in software AI e automazioni.
+              In Piemonte ci sono anche voucher camerali e bandi locali dedicati alla digitalizzazione.
+              Non garantiamo l'accesso, ma durante la diagnosi verifichiamo insieme se la tua situazione è compatibile.
+            </p>
+            <div class="mt-7">
+              <Button href="/piemonte" variant="outline" size="md">Bitora AI in Piemonte<Icon name="arrow" class="h-4 w-4" /></Button>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            {[
+              { val: "45%", desc: "Credito Transizione 5.0 per software AI" },
+              { val: "€15k", desc: "Voucher AI Match PMI provincia di Torino" },
+              { val: "50%", desc: "Bandi camerali Piemonte digitalizzazione" },
+              { val: "GDPR", desc: "Soluzioni progettate per conformità europea" },
+            ].map((item, i) => (
+              <Reveal delay={i * 80}>
+                <div class="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-5 text-center h-full">
+                  <div class="font-display text-2xl font-bold bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">{item.val}</div>
+                  <div class="text-xs text-slate-400 mt-1.5 leading-snug">{item.desc}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Reveal>
+  </Section>
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  FAQ                                                             ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <Section padding="xl">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12">
+        <Reveal>
+          <Heading eyebrow="FAQ" level={2}>
+            Domande frequenti
+          </Heading>
+        </Reveal>
+      </div>
+
+      <div class="space-y-3">
+        {faqs.map((faq, i) => (
+          <Reveal delay={i * 60}>
+            <details class="group rounded-2xl border border-white/5 bg-surface-800/60 backdrop-blur-sm overflow-hidden hover:border-brand-500/30 transition-colors">
+              <summary class="flex items-center justify-between gap-4 p-5 sm:p-6 cursor-pointer list-none">
+                <span class="text-sm sm:text-base font-semibold text-white">{faq.q}</span>
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-400 transition-all group-open:rotate-180 group-open:bg-brand-500/15 group-open:border-brand-500/30 group-open:text-brand-300">
+                  <Icon name="chevron" class="h-4 w-4" />
+                </span>
+              </summary>
+              <div class="px-5 sm:px-6 pb-5 sm:pb-6">
+                <p class="text-sm text-slate-400 leading-relaxed">{faq.a}</p>
+              </div>
+            </details>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  </Section>
+
+  <!-- ╔══════════════════════════════════════════════════════════════════╗ -->
+  <!-- ║  FINAL CTA                                                       ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════════════╝ -->
+  <Section padding="xl" border={false}>
+    <Reveal>
+      <div class="relative overflow-hidden rounded-3xl border border-brand-500/30 bg-surface-800/40 backdrop-blur-md p-10 md:p-16">
+        <ParticleField count={250} class="opacity-40" />
+        <div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[800px] bg-aurora-gradient opacity-25 blur-4xl rounded-full"></div>
+        <div class="relative text-center">
+          <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-5">
+            Pronto a capire cosa può fare<br />
+            l'AI per <span class="bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">la tua azienda?</span>
+          </h2>
+          <p class="text-slate-400 max-w-xl mx-auto mb-9 leading-relaxed">
+            La diagnosi AI gratuita dura 30 minuti. Nessun impegno. Ti diciamo onestamente da dove partire e quanto puoi risparmiare.
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button href="/contatti" variant="primary" size="lg">
+              Prenota diagnosi gratuita
+              <Icon name="arrow" class="h-4 w-4" />
+            </Button>
+            <Button href="https://wa.me/393514979670" variant="secondary" size="lg" external>
+              <Icon name="whatsapp" class="h-5 w-5 text-green-400" />
+              Scrivici su WhatsApp
+            </Button>
+          </div>
+          <p class="mt-7 text-xs text-slate-500">
+            Video call o incontro dal vivo a Carmagnola · Risposta entro 24h
+          </p>
+        </div>
+      </div>
+    </Reveal>
+  </Section>
+
+  </main>
+  <Footer />
+
+  <!-- FAQ schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</Layout>

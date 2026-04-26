@@ -1,0 +1,71 @@
+---
+interface Props {
+  variant?: 'default' | 'glass' | 'glow' | 'tilt' | 'gradient-border';
+  href?: string;
+  class?: string;
+  padding?: 'sm' | 'md' | 'lg';
+}
+
+const {
+  variant = 'default',
+  href,
+  class: className = '',
+  padding = 'md',
+} = Astro.props;
+
+const padMap = {
+  sm: 'p-5',
+  md: 'p-6',
+  lg: 'p-7 sm:p-8',
+};
+
+const base = `relative rounded-2xl ${padMap[padding]} transition-all duration-300`;
+
+const variantMap = {
+  default:
+    'border border-white/5 bg-surface-800/80 backdrop-blur-sm hover:border-brand-500/30 hover:bg-surface-700/60',
+  glass:
+    'border border-white/10 bg-white/[0.03] backdrop-blur-xl hover:bg-white/[0.06] hover:border-white/20',
+  glow:
+    'border border-brand-500/30 bg-surface-800/90 shadow-glow-soft hover:shadow-glow-brand',
+  tilt:
+    'group/tilt border border-white/5 bg-surface-800/80 backdrop-blur-sm hover:border-brand-500/30 transition-transform duration-300 will-change-transform',
+  'gradient-border':
+    'gradient-border bg-surface-800',
+};
+
+const cls = `${base} ${variantMap[variant]} ${className}`;
+
+const Tag = href ? 'a' : 'div';
+const tagProps = href ? { href } : {};
+---
+
+<Tag class={cls} {...tagProps}>
+  {variant === 'gradient-border' && (
+    <span class="pointer-events-none absolute inset-0 rounded-2xl p-[1px] bg-aurora-gradient opacity-60 [mask:linear-gradient(#000_0_0)_content-box,linear-gradient(#000_0_0)] [mask-composite:exclude]"></span>
+  )}
+  <div class="relative h-full">
+    <slot />
+  </div>
+</Tag>
+
+{variant === 'tilt' && (
+  <script>
+    document.querySelectorAll<HTMLElement>('.group\\/tilt').forEach((el) => {
+      let raf = 0;
+      el.addEventListener('pointermove', (e) => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const rect = el.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          el.style.transform = `perspective(900px) rotateX(${(-y * 6).toFixed(2)}deg) rotateY(${(x * 8).toFixed(2)}deg) translateZ(0)`;
+        });
+      });
+      el.addEventListener('pointerleave', () => {
+        cancelAnimationFrame(raf);
+        el.style.transform = 'perspective(900px) rotateX(0) rotateY(0)';
+      });
+    });
+  </script>
+)}

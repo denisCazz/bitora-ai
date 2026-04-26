@@ -1,0 +1,271 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/ui/Section.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
+import Heading from '../components/ui/Heading.astro';
+import Icon from '../components/ui/Icon.astro';
+import Reveal from '../components/ui/Reveal.astro';
+
+const cases = [
+  {
+    id: "ristorazione",
+    color: "from-orange-500 to-amber-400",
+    accentBg: "bg-orange-500/10",
+    accentBorder: "border-orange-500/30",
+    accentText: "text-orange-300",
+    emoji: "🍕",
+    sector: "Ristorazione",
+    name: "Demo · Ristorante con 60+ posti",
+    tag: "Chatbot + Automazioni",
+    situation: "Un ristorante con 60 coperti riceveva 50-80 messaggi al giorno su orari, menù, prenotazioni e allergie. Il titolare e i camerieri rispondevano manualmente durante il servizio, perdendo richieste in arrivo nei weekend e la sera tardi.",
+    solution: `Abbiamo configurato un assistente AI su WhatsApp Business addestrato su:
+- Menù completo con varianti e allergie
+- Orari, chiusure e modalità di prenotazione
+- Regole per gruppi, eventi privati e buffet
+- FAQ frequenti (parcheggio, accessibilità, pagamento)
+
+L'AI gestisce le prenotazioni autonomamente verificando disponibilità e inviando conferma + promemoria automatico il giorno prima. Passa al titolare solo per richieste speciali (gruppi >15, eventi).`,
+    results: [
+      { metric: "Messaggi gestiti autonomamente", value: "94%", icon: "message" },
+      { metric: "Ore risparmiate ogni settimana", value: "8-12h", icon: "clock" },
+      { metric: "Richieste perse fuori orario", value: "→ 0", icon: "check-circle" },
+      { metric: "Tempo di attivazione", value: "3 sett.", icon: "rocket" },
+    ],
+    quote: "Prima passavamo il servizio con il telefono in tasca a rispondere su WhatsApp. Adesso l'AI gestisce tutto e io mi concentro sulla cucina.",
+    tools: ["WhatsApp Business API", "Make", "Google Sheets", "OpenAI GPT-4o"],
+    pack: "Start AI → Operate AI",
+  },
+  {
+    id: "studio-legale",
+    color: "from-blue-500 to-cyan-400",
+    accentBg: "bg-blue-500/10",
+    accentBorder: "border-blue-500/30",
+    accentText: "text-blue-300",
+    emoji: "⚖️",
+    sector: "Studio Professionale",
+    name: "Demo · Studio di consulenza aziendale",
+    tag: "Automazioni workflow + CRM",
+    situation: "Uno studio con 3 consulenti gestiva nuovi clienti via email e foglio Excel. I follow-up venivano dimenticati, i preventivi richiedevano 1-2 ore ciascuno, i lead freddi non venivano mai ricontattati.",
+    solution: `Abbiamo costruito un sistema integrato in tre fasi:
+
+**1. Intake automatico lead**
+Modulo sul sito che raccoglie nome, azienda, settore, budget e problema. L'AI qualifica il lead e lo prioritizza.
+
+**2. Bozza preventivo automatica**
+L'AI legge la scheda del lead e genera la bozza del preventivo sul modello dello studio. Il consulente la rivede e la manda in 10 minuti invece di 90.
+
+**3. Sequenza follow-up automatica**
+Se il lead non risponde in 3 giorni parte una sequenza email personalizzata. Dopo 14 giorni, promemoria al consulente per chiamata diretta.`,
+    results: [
+      { metric: "Riduzione tempo per preventivo", value: "-75%", icon: "file-text" },
+      { metric: "Lead ricontattati sistematicamente", value: "100%", icon: "phone" },
+      { metric: "Aumento conversioni lead → cliente", value: "+32%", icon: "trending-up" },
+      { metric: "Tempo di setup", value: "4 sett.", icon: "rocket" },
+    ],
+    quote: "Il sistema lavora per noi anche quando siamo con i clienti. I preventivi escono in un decimo del tempo e non dimentichiamo più nessun lead.",
+    tools: ["Make", "HubSpot CRM", "OpenAI GPT-4o", "Tally Forms", "Gmail"],
+    pack: "Operate AI",
+  },
+  {
+    id: "azienda-manutenzione",
+    color: "from-violet-500 to-indigo-400",
+    accentBg: "bg-violet-500/10",
+    accentBorder: "border-violet-500/30",
+    accentText: "text-violet-300",
+    emoji: "🔧",
+    sector: "Manutenzione Industriale",
+    name: "Demo · Azienda servizi manutenzione",
+    tag: "Gestionale AI + Estrazione documenti",
+    situation: "Un'azienda con 12 tecnici sul territorio riceveva ordini di servizio via email (PDF). Un'impiegata trascriveva i dati nel gestionale manualmente, 30-40 ordini al giorno. I tecnici cercavano la documentazione tecnica perdendo 20-30 minuti per intervento.",
+    solution: `Abbiamo integrato due moduli AI nel gestionale Bitora esistente:
+
+**1. Estrattore automatico ordini**
+L'AI legge ogni email con allegati PDF, estrae cliente, indirizzo, tipo intervento, priorità e scadenza, popola il gestionale. L'impiegata verifica solo le anomalie (5% dei casi).
+
+**2. Assistente tecnico AI interno**
+I tecnici chiedono in linguaggio naturale su schemi, manuali e schede impianto. L'AI cerca nella documentazione aziendale e risponde in secondi, con riferimento al documento fonte.`,
+    results: [
+      { metric: "Riduzione tempo trascrizione ordini", value: "-90%", icon: "database" },
+      { metric: "Errori di inserimento dati", value: "→ <1%", icon: "check-circle" },
+      { metric: "Recupero documentazione tecnica", value: "-65%", icon: "search" },
+      { metric: "Tempo di integrazione", value: "6 sett.", icon: "rocket" },
+    ],
+    quote: "Quello che faceva l'impiegata in 4 ore di trascrizione ora lo fa l'AI in 20 minuti. Lei ora si occupa di cose che contano davvero.",
+    tools: ["Gestionale Bitora", "OpenAI GPT-4o", "LangChain RAG", "Make", "Gmail API"],
+    pack: "Custom AI System",
+  },
+];
+---
+
+<Layout
+  title="Casi Studio AI"
+  description="3 casi studio concreti: chatbot per ristorante, automazioni per studio professionale, estrazione documenti per azienda di manutenzione."
+>
+  <Header />
+  <main id="main">
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden pt-12 pb-20 sm:pt-16">
+    <div class="pointer-events-none absolute inset-0 bg-grid-pattern bg-grid opacity-[0.15] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000,transparent_70%)]"></div>
+    <div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[800px] bg-aurora-gradient opacity-[0.18] blur-4xl rounded-full"></div>
+
+    <div class="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+      <Reveal class="inline-flex">
+        <Badge variant="brand">Casi Studio</Badge>
+      </Reveal>
+      <Reveal delay={120}>
+        <h1 class="mt-6 font-display text-4xl sm:text-5xl lg:text-[4rem] font-bold text-white leading-[1.05]">
+          L'AI in pratica,<br />
+          <span class="bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">non in teoria.</span>
+        </h1>
+      </Reveal>
+      <Reveal delay={250}>
+        <p class="mt-7 text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          Tre scenari realistici, tre soluzioni già pronte per essere adattate.
+          Ogni caso mostra il problema, la soluzione e i risultati misurabili.
+        </p>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section class="pb-12">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-10">
+      {cases.map((c, i) => (
+        <Reveal>
+          <article id={c.id} class="group relative rounded-3xl border border-white/5 bg-surface-800/80 backdrop-blur-md overflow-hidden transition-all hover:border-white/15">
+            <!-- Top gradient bar -->
+            <div class={`h-1.5 w-full bg-gradient-to-r ${c.color}`}></div>
+            <!-- Number watermark -->
+            <div class="pointer-events-none absolute top-6 right-8 text-[120px] font-display font-bold text-white/[0.03] leading-none select-none">
+              0{i + 1}
+            </div>
+
+            <div class="relative p-8 md:p-12">
+              <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
+                <div class="flex items-center gap-4">
+                  <span class="text-4xl">{c.emoji}</span>
+                  <div>
+                    <div class={`text-[11px] uppercase tracking-widest ${c.accentText} font-semibold`}>{c.sector}</div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white font-display">{c.name}</h2>
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class={`rounded-full border ${c.accentBorder} ${c.accentBg} ${c.accentText} px-3 py-1 text-[11px] font-medium`}>{c.tag}</span>
+                  <span class="rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-[11px] font-medium text-brand-300">{c.pack}</span>
+                </div>
+              </div>
+
+              <div class="grid lg:grid-cols-2 gap-10">
+                <!-- Left: Situation + Solution -->
+                <div class="space-y-7">
+                  <div>
+                    <h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2 font-display">
+                      <span class="flex h-6 w-6 items-center justify-center rounded-full bg-red-500/15 text-red-400 text-xs font-bold">!</span>
+                      Situazione di partenza
+                    </h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">{c.situation}</p>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-semibold text-white mb-3 flex items-center gap-2 font-display">
+                      <span class="flex h-6 w-6 items-center justify-center rounded-full bg-brand-500/20 text-brand-300 text-xs font-bold">→</span>
+                      Soluzione implementata
+                    </h3>
+                    <div class="text-sm text-slate-400 leading-relaxed whitespace-pre-line solution-text">
+                      {c.solution.split('\n').map((line) => {
+                        if (line.startsWith('**') && line.endsWith('**')) {
+                          return <p class="text-white font-semibold mt-3 mb-1.5 font-display text-[13px]">{line.slice(2, -2)}</p>;
+                        }
+                        if (line.startsWith('- ')) {
+                          return <p class="flex gap-2"><span class="text-accent-400">›</span>{line.slice(2)}</p>;
+                        }
+                        return <p>{line}</p>;
+                      })}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 class="text-[11px] font-semibold uppercase tracking-widest text-slate-500 mb-3">Stack utilizzato</h3>
+                    <div class="flex flex-wrap gap-2">
+                      {c.tools.map((t) => (
+                        <span class="rounded-md border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-mono text-slate-300">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Results -->
+                <div class="space-y-5">
+                  <h3 class="text-sm font-semibold text-white font-display flex items-center gap-2">
+                    <Icon name="trending-up" class="h-4 w-4 text-accent-400" />
+                    Risultati ottenuti
+                  </h3>
+                  <div class="grid grid-cols-2 gap-3">
+                    {c.results.map((r) => (
+                      <div class="group/r relative rounded-2xl border border-white/5 bg-surface-900/60 backdrop-blur-sm p-4 hover:border-brand-500/30 transition-colors">
+                        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500/10 text-brand-300 mb-3">
+                          <Icon name={r.icon} class="h-4 w-4" />
+                        </div>
+                        <div class="font-display text-2xl font-bold text-white">{r.value}</div>
+                        <div class="text-[11px] text-slate-400 leading-snug mt-1">{r.metric}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <blockquote class="rounded-2xl border border-white/10 bg-white/[0.03] p-5 relative">
+                    <span class="absolute -top-3 left-5 text-5xl text-brand-500/40 font-display leading-none">"</span>
+                    <p class="text-sm text-slate-200 italic leading-relaxed pt-2">{c.quote}</p>
+                    <footer class="mt-3 text-[11px] text-slate-500">— Titolare, scenario {c.sector}</footer>
+                  </blockquote>
+
+                  <div class="rounded-2xl border border-brand-500/30 bg-brand-500/5 p-5">
+                    <p class="text-xs text-slate-300 mb-3">Vuoi una soluzione simile per la tua azienda?</p>
+                    <Button href={`/contatti?settore=${encodeURIComponent(c.sector)}`} variant="outline" size="sm">
+                      Parliamone nella diagnosi
+                      <Icon name="arrow" class="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </Reveal>
+      ))}
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <Section padding="sm" border={true}>
+    <p class="text-xs text-slate-500 text-center max-w-3xl mx-auto leading-relaxed">
+      I casi presentati sono scenari realistici basati su architetture e risultati tipici di sistemi simili.
+      I risultati effettivi dipendono dal settore, dal volume di dati e dalla complessità dei processi aziendali.
+    </p>
+  </Section>
+
+  <!-- CTA -->
+  <Section padding="xl" border={false}>
+    <Reveal>
+      <div class="relative overflow-hidden rounded-3xl border border-brand-500/30 bg-surface-800/40 backdrop-blur-md p-10 md:p-16 text-center">
+        <div class="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-[400px] w-[700px] bg-aurora-gradient opacity-25 blur-4xl rounded-full"></div>
+        <div class="relative">
+          <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
+            Il tuo caso è diverso?<br />
+            <span class="bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">Bene, parliamone.</span>
+          </h2>
+          <p class="text-slate-400 mb-8 max-w-xl mx-auto">
+            Ogni azienda ha i propri processi. La diagnosi gratuita serve a capire cosa funziona per te nello specifico.
+          </p>
+          <Button href="/contatti" variant="primary" size="lg">
+            Prenota diagnosi AI gratuita
+            <Icon name="arrow" class="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </Reveal>
+  </Section>
+
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,395 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/ui/Section.astro';
+import Badge from '../components/ui/Badge.astro';
+import Heading from '../components/ui/Heading.astro';
+import Icon from '../components/ui/Icon.astro';
+import Reveal from '../components/ui/Reveal.astro';
+import ParticleField from '../components/three/ParticleField.astro';
+
+const pack = Astro.url.searchParams.get('pack') ?? '';
+const interesseQuery = Astro.url.searchParams.get('interesse') ?? '';
+const settoreQuery = Astro.url.searchParams.get('settore') ?? '';
+const programmaQuery = Astro.url.searchParams.get('programma') ?? '';
+const errorQuery = Astro.url.searchParams.get('error') ?? '';
+
+const packLabels: Record<string, string> = {
+  start: 'Start AI',
+  operate: 'Operate AI',
+  custom: 'Custom AI System',
+};
+const selectedPack = packLabels[pack] ?? '';
+
+const errorMessages: Record<string, string> = {
+  config: 'Il form non è ancora configurato. Scrivici via email a info@bitora.it.',
+  send: 'Invio non riuscito. Riprova oppure scrivici via email.',
+};
+const initialError = errorMessages[errorQuery] ?? '';
+---
+
+<Layout
+  title="Contatti"
+  description="Prenota la tua diagnosi AI gratuita. 30 minuti per capire dove l'AI porta valore concreto. Sede a Carmagnola, serviamo tutta Italia."
+>
+  <Header />
+  <main id="main">
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden pt-12 pb-12 sm:pt-16">
+    <div class="pointer-events-none absolute inset-0 bg-grid-pattern bg-grid opacity-[0.12] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000,transparent_70%)]"></div>
+    <ParticleField count={300} class="opacity-30" />
+    <div class="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[800px] bg-aurora-gradient opacity-[0.18] blur-4xl rounded-full"></div>
+
+    <div class="relative mx-auto max-w-3xl px-4 text-center">
+      <Reveal class="inline-flex">
+        <Badge variant="brand">Diagnosi AI · 30 minuti · gratuita</Badge>
+      </Reveal>
+      <Reveal delay={120}>
+        <h1 class="mt-6 font-display text-4xl sm:text-5xl font-bold text-white leading-[1.05]">
+          Prenota la tua<br />
+          <span class="bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">diagnosi AI gratuita.</span>
+        </h1>
+      </Reveal>
+      <Reveal delay={250}>
+        <p class="mt-6 text-base sm:text-lg text-slate-400 leading-relaxed max-w-xl mx-auto">
+          30 minuti con il nostro team. Ti diciamo onestamente da dove partire, quanto puoi
+          automatizzare e se ci sono bandi compatibili con il tuo progetto.
+        </p>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- FORM + INFO -->
+  <Section padding="lg" border={false}>
+    <div class="grid lg:grid-cols-5 gap-10 items-start">
+
+      <!-- Form -->
+      <Reveal class="lg:col-span-3">
+        <div class="relative rounded-3xl border border-white/10 bg-surface-800/60 backdrop-blur-md p-7 sm:p-9 overflow-hidden">
+          <div class="pointer-events-none absolute -top-32 -right-32 h-[300px] w-[300px] rounded-full bg-brand-500/10 blur-3xl"></div>
+          <div class="pointer-events-none absolute -bottom-32 -left-32 h-[300px] w-[300px] rounded-full bg-accent-500/10 blur-3xl"></div>
+
+          <div class="relative">
+            {initialError && (
+              <div id="form-server-error" class="mb-5 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                {initialError}
+              </div>
+            )}
+
+            <form id="contatti-form" method="POST" action="/api/contatti" class="space-y-5" novalidate>
+              <!-- Honeypot -->
+              <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="field">
+                  <label class="block text-xs font-medium text-slate-300 mb-1.5" for="nome">Nome e cognome *</label>
+                  <input id="nome" name="nome" type="text" required minlength="2" autocomplete="name"
+                    class="form-input"
+                    placeholder="Mario Rossi" />
+                </div>
+                <div class="field">
+                  <label class="block text-xs font-medium text-slate-300 mb-1.5" for="azienda">Azienda</label>
+                  <input id="azienda" name="azienda" type="text" autocomplete="organization"
+                    class="form-input"
+                    placeholder="Nome azienda o attività" />
+                </div>
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="field">
+                  <label class="block text-xs font-medium text-slate-300 mb-1.5" for="email">Email *</label>
+                  <input id="email" name="email" type="email" required autocomplete="email"
+                    class="form-input"
+                    placeholder="mario@esempio.it" />
+                </div>
+                <div class="field">
+                  <label class="block text-xs font-medium text-slate-300 mb-1.5" for="telefono">Telefono / WhatsApp</label>
+                  <input id="telefono" name="telefono" type="tel" autocomplete="tel"
+                    class="form-input"
+                    placeholder="+39 ..." />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="block text-xs font-medium text-slate-300 mb-1.5" for="settore">Settore</label>
+                <select id="settore" name="settore"
+                  class="form-input">
+                  <option value="" selected={!settoreQuery}>Seleziona settore...</option>
+                  {[
+                    'Ristorazione / Food',
+                    'Retail / Commercio',
+                    'Studio professionale / Consulenza',
+                    'Manifattura / Produzione',
+                    'Manutenzione / Impianti',
+                    'Immobiliare / Costruzioni',
+                    'Salute / Benessere',
+                    'Turismo / Ospitalità',
+                    'Servizi B2B',
+                    'Altro',
+                  ].map((opt) => (
+                    <option value={opt} selected={settoreQuery === opt}>{opt}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="block text-xs font-medium text-slate-300 mb-1.5" for="interesse">Cosa ti interessa di più?</label>
+                <select id="interesse" name="interesse"
+                  class="form-input">
+                  <option value="" selected={!interesseQuery}>Seleziona interesse...</option>
+                  {[
+                    { v: 'Automazioni AI', l: 'Automazioni AI (email, preventivi, documenti)' },
+                    { v: 'Chatbot Aziendale', l: 'Chatbot su sito o WhatsApp' },
+                    { v: 'Siti Web AI-ready', l: 'Sito web rapido e ottimizzato AI' },
+                    { v: 'Gestionale con AI', l: 'CRM o gestionale con AI integrata' },
+                    { v: 'Formazione AI', l: 'Formazione e transizione AI per il team' },
+                    { v: 'Non so da dove partire', l: 'Non so ancora da dove partire' },
+                  ].map((opt) => (
+                    <option value={opt.v} selected={interesseQuery === opt.v}>{opt.l}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="block text-xs font-medium text-slate-300 mb-1.5" for="messaggio">Raccontaci la tua situazione *</label>
+                <textarea id="messaggio" name="messaggio" rows="4" required minlength="10"
+                  class="form-input resize-none"
+                  placeholder="Quali processi vorresti automatizzare? Che problema stai cercando di risolvere?"></textarea>
+              </div>
+
+              {selectedPack && <input type="hidden" name="pack" value={selectedPack} />}
+              {programmaQuery && <input type="hidden" name="programma" value={programmaQuery} />}
+
+              {selectedPack && (
+                <div class="rounded-xl border border-brand-500/30 bg-brand-500/10 px-4 py-3 text-xs text-brand-200 flex items-center gap-2">
+                  <Icon name="sparkles" class="h-3.5 w-3.5" />
+                  Hai selezionato il pacchetto: <strong>{selectedPack}</strong>
+                </div>
+              )}
+
+              <label class="flex items-start gap-3 text-xs text-slate-400 cursor-pointer">
+                <input type="checkbox" name="privacy" required value="on" class="mt-0.5 h-4 w-4 rounded border border-white/20 bg-white/5 text-brand-500 focus:ring-brand-500 accent-brand-500" />
+                <span>
+                  Accetto la <a href="https://bitora.it/privacy-policy" target="_blank" rel="noopener" class="underline hover:text-slate-200">Privacy Policy</a> di Bitora e acconsento all'invio del modulo.
+                </span>
+              </label>
+
+              <div id="form-error" class="hidden rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200"></div>
+
+              <button
+                type="submit"
+                id="submit-btn"
+                class="group relative w-full inline-flex justify-center items-center gap-2 rounded-xl bg-brand-gradient px-6 py-4 text-sm font-semibold text-white shadow-glow-soft hover:shadow-glow-brand transition-all duration-200 ease-spring disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <span class="btn-label flex items-center gap-2">
+                  Invia richiesta diagnosi AI gratuita
+                  <Icon name="arrow" class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+                <span class="btn-spinner hidden items-center gap-2">
+                  <span class="h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+                  Invio in corso...
+                </span>
+              </button>
+
+              <p class="text-[11px] text-slate-500 text-center">
+                Risposta entro 24h · La diagnosi è sempre gratuita e senza impegno.
+              </p>
+            </form>
+          </div>
+        </div>
+      </Reveal>
+
+      <!-- Info col -->
+      <div class="lg:col-span-2 space-y-6">
+        <Reveal delay={150}>
+          <div class="rounded-2xl border border-white/10 bg-surface-800/60 backdrop-blur-md p-7">
+            <h2 class="text-base font-bold text-white mb-5 font-display">Cosa succede dopo</h2>
+            <ol class="space-y-5">
+              {[
+                { n: "1", t: "Risposta entro 24h", d: "Ti contattiamo per fissare la sessione. Video call o incontro a Carmagnola." },
+                { n: "2", t: "30 minuti di diagnosi", d: "Analizziamo i tuoi processi e stimiamo tempi e costi." },
+                { n: "3", t: "Proposta su misura", d: "Se c'è un fit, ti inviamo una proposta. Nessuna vendita aggressiva." },
+              ].map((s) => (
+                <li class="flex gap-4">
+                  <div class="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-gradient text-xs font-bold text-white shadow-glow-soft">
+                    {s.n}
+                  </div>
+                  <div class="pt-1">
+                    <div class="text-sm font-semibold text-white">{s.t}</div>
+                    <div class="text-xs text-slate-400 mt-0.5 leading-relaxed">{s.d}</div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </Reveal>
+
+        <Reveal delay={250}>
+          <div class="rounded-2xl border border-white/10 bg-surface-800/60 backdrop-blur-md p-7 space-y-3">
+            <h3 class="text-sm font-semibold text-white mb-2 font-display">Contatti diretti</h3>
+            <a href="mailto:info@bitora.it" class="flex items-center gap-3 text-sm text-slate-300 hover:text-white transition-colors group">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500/15 text-brand-300 group-hover:bg-brand-500/25 transition-colors">
+                <Icon name="mail" class="h-4 w-4" />
+              </span>
+              info@bitora.it
+            </a>
+            <a href="https://wa.me/393514979670" target="_blank" rel="noopener" class="flex items-center gap-3 text-sm text-slate-300 hover:text-white transition-colors group">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-green-500/15 text-green-400 group-hover:bg-green-500/25 transition-colors">
+                <Icon name="whatsapp" class="h-4 w-4" />
+              </span>
+              WhatsApp diretto
+            </a>
+            <div class="flex items-center gap-3 text-sm text-slate-400">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-500/15 text-accent-300">
+                <Icon name="map-pin" class="h-4 w-4" />
+              </span>
+              Carmagnola (TO) · Tutta Italia
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={350}>
+          <div class="relative overflow-hidden rounded-2xl border border-electric-400/30 bg-electric-400/5 p-6">
+            <div class="pointer-events-none absolute -top-10 -right-10 h-[150px] w-[150px] rounded-full bg-electric-400/10 blur-3xl"></div>
+            <div class="relative">
+              <div class="flex items-center gap-2 mb-3">
+                <Icon name="sparkles" class="h-4 w-4 text-electric-300" />
+                <h3 class="text-sm font-semibold text-electric-200 font-display">Stai pensando ai bandi?</h3>
+              </div>
+              <p class="text-sm text-slate-300 leading-relaxed">
+                Verifichiamo nella diagnosi eventuali bandi compatibili come Transizione 5.0,
+                AI Match Torino o voucher camerali Piemonte. Senza promesse, con un'analisi onesta.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </Section>
+
+  </main>
+  <Footer />
+</Layout>
+
+<style is:global>
+  .form-input {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: white;
+    transition: all 0.2s;
+  }
+  .form-input::placeholder { color: rgb(100, 116, 139); }
+  .form-input:hover { border-color: rgba(255, 255, 255, 0.2); }
+  .form-input:focus {
+    outline: none;
+    border-color: rgb(99, 102, 241);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .field.error .form-input {
+    border-color: rgb(248, 113, 113);
+    box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.15);
+  }
+  .field-error-msg {
+    color: rgb(252, 165, 165);
+    font-size: 0.7rem;
+    margin-top: 0.4rem;
+  }
+  select.form-input {
+    background-color: rgba(20, 20, 42, 0.9);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+    appearance: none;
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contatti-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+  const errorBox = document.getElementById('form-error') as HTMLDivElement | null;
+  const btnLabel = submitBtn?.querySelector<HTMLElement>('.btn-label');
+  const btnSpinner = submitBtn?.querySelector<HTMLElement>('.btn-spinner');
+
+  function setLoading(loading: boolean) {
+    if (!submitBtn || !btnLabel || !btnSpinner) return;
+    submitBtn.disabled = loading;
+    btnLabel.classList.toggle('hidden', loading);
+    btnSpinner.classList.toggle('hidden', !loading);
+    btnSpinner.classList.toggle('flex', loading);
+  }
+
+  function showError(msg: string) {
+    if (!errorBox) return;
+    errorBox.textContent = msg;
+    errorBox.classList.remove('hidden');
+    errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function clearError() {
+    errorBox?.classList.add('hidden');
+    document.querySelectorAll<HTMLElement>('.field.error').forEach((f) => f.classList.remove('error'));
+    document.querySelectorAll<HTMLElement>('.field-error-msg').forEach((m) => m.remove());
+  }
+
+  function setFieldErrors(errors: Record<string, string[]>) {
+    Object.entries(errors).forEach(([name, msgs]) => {
+      const input = document.querySelector<HTMLInputElement>(`[name="${name}"]`);
+      const field = input?.closest<HTMLElement>('.field');
+      if (input && field) {
+        field.classList.add('error');
+        const msg = document.createElement('p');
+        msg.className = 'field-error-msg';
+        msg.textContent = msgs[0];
+        field.appendChild(msg);
+      }
+    });
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    setLoading(true);
+
+    const fd = new FormData(form);
+    const payload: Record<string, string | boolean> = {};
+    fd.forEach((v, k) => { payload[k] = v.toString(); });
+    if ((form.querySelector('[name=privacy]') as HTMLInputElement)?.checked) {
+      payload.privacy = 'on';
+    }
+
+    try {
+      const res = await fetch('/api/contatti', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        window.location.href = data.redirect ?? '/grazie';
+        return;
+      }
+      if (res.status === 422 && data.errors) {
+        setFieldErrors(data.errors);
+        showError('Controlla i campi evidenziati.');
+      } else {
+        showError(data.error ?? 'Invio non riuscito. Riprova oppure scrivici via email a info@bitora.it.');
+      }
+    } catch {
+      showError('Errore di rete. Verifica la connessione e riprova.');
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>

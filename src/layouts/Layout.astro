@@ -1,0 +1,143 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "AI concreta per PMI e aziende del territorio. Chatbot, automazioni, siti web AI-ready e gestionali intelligenti. Sede in Piemonte, serviamo tutta Italia.",
+  canonical,
+  ogImage = "/og-default.png",
+  noindex = false,
+} = Astro.props;
+
+const siteUrl = "https://ai.bitora.it";
+const pageUrl = canonical ?? siteUrl + Astro.url.pathname;
+const fullTitle = title === "Home" ? "Bitora AI | AI operativa per PMI" : `${title} | Bitora AI`;
+
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}#organization`,
+      name: "Bitora AI",
+      url: siteUrl,
+      logo: `${siteUrl}/favicon.svg`,
+      sameAs: ["https://bitora.it"],
+      parentOrganization: {
+        "@type": "Organization",
+        name: "Bitora",
+        url: "https://bitora.it",
+      },
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": `${siteUrl}#localbusiness`,
+      name: "Bitora AI",
+      image: `${siteUrl}${ogImage}`,
+      url: siteUrl,
+      telephone: "+39",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Carmagnola",
+        addressRegion: "TO",
+        addressCountry: "IT",
+      },
+      areaServed: ["IT", "Piemonte"],
+      priceRange: "€€",
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="it" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={pageUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta name="theme-color" content="#080810" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={siteUrl + ogImage} />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:site_name" content="Bitora AI" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={siteUrl + ogImage} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Schema.org -->
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+
+    <style is:global>
+      :root {
+        color-scheme: dark;
+      }
+      html, body { height: 100%; }
+      body {
+        background-color: #080810;
+        background-image:
+          radial-gradient(ellipse 70% 50% at 50% -10%, rgba(99,102,241,0.18), transparent 60%),
+          radial-gradient(ellipse 60% 40% at 90% 110%, rgba(6,182,212,0.10), transparent 60%);
+        background-attachment: fixed;
+      }
+      ::selection {
+        background-color: rgba(99,102,241,0.45);
+        color: #fff;
+      }
+      *:focus-visible {
+        outline: 2px solid #818cf8;
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        z-index: 100;
+        padding: 8px 16px;
+        background: #6366f1;
+        color: white;
+        border-radius: 0 0 6px 0;
+      }
+      .skip-link:focus { left: 0; }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-surface-900 text-slate-100 font-sans antialiased overflow-x-hidden">
+    <a href="#main" class="skip-link">Vai al contenuto</a>
+    <slot />
+  </body>
+</html>

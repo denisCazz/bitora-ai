@@ -1,0 +1,57 @@
+---
+interface Props {
+  eyebrow?: string;
+  level?: 1 | 2 | 3;
+  align?: 'left' | 'center';
+  highlight?: string;
+  subtitle?: string;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  level = 2,
+  align = 'center',
+  highlight,
+  subtitle,
+  class: className = '',
+} = Astro.props;
+
+const sizeMap = {
+  1: 'text-4xl sm:text-5xl lg:text-6xl',
+  2: 'text-3xl sm:text-4xl lg:text-[2.75rem]',
+  3: 'text-2xl sm:text-3xl',
+};
+
+const alignMap = {
+  left: 'text-left',
+  center: 'text-center mx-auto',
+};
+const Tag = `h${level}` as 'h1' | 'h2' | 'h3';
+---
+
+<div class={`${alignMap[align]} ${className} max-w-3xl`}>
+  {eyebrow && (
+    <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent-400 mb-4 flex items-center gap-2 justify-center">
+      {align === 'left' ? null : <span class="h-px w-6 bg-accent-400/40"></span>}
+      <span>{eyebrow}</span>
+      {align === 'left' ? null : <span class="h-px w-6 bg-accent-400/40"></span>}
+    </p>
+  )}
+  <Tag class={`font-display font-bold text-white leading-[1.1] tracking-tight ${sizeMap[level]}`}>
+    <slot />
+    {highlight && (
+      <>
+        {' '}
+        <span class="relative inline-block bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">
+          {highlight}
+        </span>
+      </>
+    )}
+  </Tag>
+  {subtitle && (
+    <p class={`mt-5 text-base sm:text-lg text-slate-400 leading-relaxed ${align === 'center' ? 'mx-auto max-w-2xl' : 'max-w-2xl'}`}>
+      {subtitle}
+    </p>
+  )}
+</div>

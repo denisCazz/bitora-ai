@@ -1,0 +1,221 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Section from '../components/ui/Section.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
+import Heading from '../components/ui/Heading.astro';
+import Icon from '../components/ui/Icon.astro';
+import Reveal from '../components/ui/Reveal.astro';
+
+const included = [
+  "Analisi keyword locali e settore con AI",
+  "Testi generati e ottimizzati con AI (revisionati da noi)",
+  "Design mobile-first, veloce e moderno",
+  "SEO tecnica on-page e meta tag completi",
+  "Ottimizzazione AEO per motori AI (ChatGPT, Perplexity, Gemini)",
+  "Lead form con notifica email/WhatsApp",
+  "Integrazione Google Analytics e Search Console",
+  "WhatsApp click-to-chat su mobile",
+  "Cookie consent GDPR",
+  "Hosting e dominio configurati",
+];
+
+const timeline = [
+  { day: "Giorno 1-2", title: "Briefing e analisi", desc: "Call di 45 minuti per capire business, pubblico e obiettivi. L'AI elabora keyword e struttura del sito." },
+  { day: "Giorno 3-5", title: "Struttura e testi", desc: "Creiamo struttura pagine e contenuti iniziali. Tu li rivedi e approvi." },
+  { day: "Giorno 6-9", title: "Design e sviluppo", desc: "Il sito prende forma. Ti mostriamo una preview su staging." },
+  { day: "Giorno 10-12", title: "Revisioni e go-live", desc: "Applichiamo correzioni, configuriamo hosting, mettiamo online." },
+];
+---
+
+<Layout
+  title="Siti Web AI-ready"
+  description="Siti web professionali ottimizzati per SEO locale e ricerca AI. Consegna in 10-12 giorni, testi generati con AI, lead form e WhatsApp integrati."
+>
+  <Header />
+  <main id="main">
+
+  <!-- HERO con browser mockup -->
+  <section class="relative overflow-hidden pt-12 pb-24 sm:pt-16">
+    <div class="pointer-events-none absolute inset-0 bg-grid-pattern bg-grid opacity-[0.15] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000,transparent_70%)]"></div>
+    <div class="pointer-events-none absolute -top-40 left-1/3 h-[500px] w-[700px] bg-brand-500/15 blur-4xl rounded-full"></div>
+
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <Reveal class="inline-flex">
+          <Badge variant="brand">
+            <Icon name="globe" class="h-3 w-3" />
+            Siti Web AI-ready
+          </Badge>
+        </Reveal>
+        <Reveal delay={120}>
+          <h1 class="mt-6 font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.05]">
+            Sito web professionale<br />
+            <span class="bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">in 10-12 giorni.</span>
+          </h1>
+        </Reveal>
+        <Reveal delay={250}>
+          <p class="mt-6 text-lg text-slate-400 leading-relaxed">
+            Usiamo l'AI per velocizzare analisi, contenuti e SEO. Ottieni un sito ottimizzato per Google e per i nuovi
+            motori di ricerca AI (ChatGPT, Perplexity, Gemini) a una frazione del tempo tradizionale.
+          </p>
+        </Reveal>
+        <Reveal delay={400}>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <Button href="/contatti?interesse=Siti+Web+AI-ready" variant="primary" size="lg">
+              Richiedi preventivo gratuito
+              <Icon name="arrow" class="h-4 w-4" />
+            </Button>
+            <Button href="#cosa-include" variant="secondary" size="lg">Cosa include</Button>
+          </div>
+        </Reveal>
+      </div>
+
+      <!-- Browser mockup -->
+      <Reveal delay={200}>
+        <div class="relative">
+          <div class="absolute -inset-6 bg-aurora-gradient opacity-20 blur-4xl rounded-[2.5rem]"></div>
+          <div class="relative rounded-2xl border border-white/10 bg-surface-800/90 backdrop-blur-xl shadow-2xl shadow-brand-600/20 overflow-hidden transform-gpu" style="transform: perspective(1400px) rotateY(-7deg) rotateX(3deg);">
+            <!-- Browser bar -->
+            <div class="flex items-center gap-2 px-3 py-2.5 border-b border-white/5 bg-surface-700/60">
+              <div class="flex gap-1.5">
+                <span class="h-2.5 w-2.5 rounded-full bg-red-500/60"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-yellow-500/60"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-green-500/60"></span>
+              </div>
+              <div class="flex-1 mx-3 rounded-md bg-surface-900/60 px-3 py-1 flex items-center gap-2">
+                <Icon name="shield" class="h-3 w-3 text-green-400" />
+                <span class="text-[10px] text-slate-400 font-mono">tuo-sito.it</span>
+              </div>
+            </div>
+            <!-- Mockup content -->
+            <div class="p-5 space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="h-2 w-24 rounded-full bg-brand-gradient"></div>
+                <div class="flex gap-2">
+                  <div class="h-1.5 w-10 rounded-full bg-white/10"></div>
+                  <div class="h-1.5 w-10 rounded-full bg-white/10"></div>
+                  <div class="h-1.5 w-10 rounded-full bg-white/10"></div>
+                </div>
+              </div>
+              <div class="space-y-2 mt-6">
+                <div class="h-3 w-3/4 rounded bg-white/15"></div>
+                <div class="h-3 w-2/3 rounded bg-white/15"></div>
+                <div class="h-2 w-full rounded bg-white/8 mt-3"></div>
+                <div class="h-2 w-5/6 rounded bg-white/8"></div>
+              </div>
+              <div class="grid grid-cols-3 gap-2 mt-5">
+                <div class="aspect-[4/3] rounded-lg bg-brand-gradient opacity-70"></div>
+                <div class="aspect-[4/3] rounded-lg bg-accent-500/40 border border-accent-400/30"></div>
+                <div class="aspect-[4/3] rounded-lg bg-surface-700 border border-white/10"></div>
+              </div>
+              <div class="flex items-center gap-2 mt-3">
+                <div class="h-7 w-24 rounded-lg bg-brand-gradient text-[9px] font-bold text-white flex items-center justify-center">CTA</div>
+                <div class="h-7 w-20 rounded-lg border border-white/10 bg-white/5"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Floating indicators -->
+          <div class="hidden md:block absolute -top-3 -left-3 -rotate-3">
+            <div class="flex items-center gap-2 rounded-xl border border-green-400/30 bg-green-400/10 backdrop-blur-md px-3 py-2 shadow-lg">
+              <Icon name="trending-up" class="h-3.5 w-3.5 text-green-400" />
+              <span class="text-[11px] text-green-300 font-medium">Lighthouse 98/100</span>
+            </div>
+          </div>
+          <div class="hidden md:block absolute -bottom-3 right-6 rotate-3">
+            <div class="flex items-center gap-2 rounded-xl border border-electric-400/30 bg-electric-400/10 backdrop-blur-md px-3 py-2 shadow-lg">
+              <Icon name="sparkles" class="h-3.5 w-3.5 text-electric-300" />
+              <span class="text-[11px] text-electric-300 font-medium">AEO ready</span>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- INCLUDED + TIMELINE -->
+  <Section id="cosa-include" variant="glow" padding="xl">
+    <div class="grid lg:grid-cols-2 gap-14 items-start">
+      <Reveal>
+        <Heading eyebrow="Cosa include" level={2} align="left">
+          Ogni sito che consegniamo
+        </Heading>
+        <ul class="mt-8 space-y-3">
+          {included.map((item, i) => (
+            <Reveal delay={i * 50}>
+              <li class="flex items-start gap-3 text-sm text-slate-300">
+                <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-accent-500/15 text-accent-300 mt-0.5">
+                  <Icon name="check" class="h-3 w-3" />
+                </span>
+                {item}
+              </li>
+            </Reveal>
+          ))}
+        </ul>
+        <div class="mt-8 relative overflow-hidden rounded-2xl border border-electric-400/30 bg-electric-400/5 p-5">
+          <div class="absolute -inset-1 bg-electric-400/10 blur-2xl rounded-full"></div>
+          <div class="relative">
+            <div class="flex items-center gap-2 text-sm font-semibold text-electric-300 mb-2 font-display">
+              <Icon name="sparkles" class="h-4 w-4" />
+              AEO · Answer Engine Optimization
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Il sito viene strutturato per rispondere alle domande degli utenti nel formato preferito da ChatGPT,
+              Perplexity e Google AI Overview. Chi ti cerca tramite AI ti trova.
+            </p>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={150}>
+        <Heading eyebrow="Come lavoriamo" level={2} align="left">
+          Dalla call al sito online
+        </Heading>
+        <div class="mt-8 space-y-1">
+          {timeline.map((t, i) => (
+            <Reveal delay={i * 100}>
+              <div class="relative flex gap-5 pb-8 last:pb-0">
+                {i < timeline.length - 1 && (
+                  <div class="absolute left-[15px] top-9 bottom-0 w-px bg-gradient-to-b from-brand-500/40 to-transparent"></div>
+                )}
+                <div class="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500/15 border border-brand-500/30 text-xs font-bold text-brand-300 font-mono z-10">
+                  {i + 1}
+                </div>
+                <div>
+                  <div class="text-[11px] uppercase tracking-widest text-accent-400 font-mono mb-1">{t.day}</div>
+                  <div class="text-base font-semibold text-white mb-1.5 font-display">{t.title}</div>
+                  <p class="text-sm text-slate-400 leading-relaxed">{t.desc}</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </Reveal>
+    </div>
+  </Section>
+
+  <!-- CTA -->
+  <Section padding="xl" border={false}>
+    <Reveal>
+      <div class="relative overflow-hidden rounded-3xl border border-brand-500/30 bg-surface-800/40 backdrop-blur-md p-10 md:p-16 text-center">
+        <div class="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 h-[400px] w-[700px] bg-aurora-gradient opacity-25 blur-4xl rounded-full"></div>
+        <div class="relative">
+          <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mb-4">
+            Il tuo sito,<br />
+            <span class="bg-aurora-gradient bg-clip-text text-transparent bg-[length:200%_200%] animate-aurora">pronto in due settimane.</span>
+          </h2>
+          <p class="text-slate-400 mb-8 max-w-xl mx-auto">Raccontaci il tuo business e ti mandiamo una proposta in 24 ore.</p>
+          <Button href="/contatti?interesse=Siti+Web+AI-ready" variant="primary" size="lg">
+            Richiedi preventivo
+            <Icon name="arrow" class="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </Reveal>
+  </Section>
+
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,35 @@
+---
+interface Props {
+  items: string[];
+  direction?: 'left' | 'right';
+  speed?: 'slow' | 'normal' | 'fast';
+  class?: string;
+}
+
+const { items, direction = 'left', speed = 'normal', class: className = '' } = Astro.props;
+
+const speedMap = {
+  slow: '60s',
+  normal: '40s',
+  fast: '25s',
+};
+
+const animClass = direction === 'left' ? 'animate-marquee' : 'animate-marquee-reverse';
+const doubled = [...items, ...items];
+---
+
+<div class={`relative overflow-hidden ${className}`}>
+  <div class="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-surface-900 to-transparent z-10"></div>
+  <div class="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-surface-900 to-transparent z-10"></div>
+  <div
+    class={`flex w-max gap-4 ${animClass}`}
+    style={`animation-duration:${speedMap[speed]}`}
+  >
+    {doubled.map((item) => (
+      <div class="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-2.5 text-sm font-medium text-slate-300 backdrop-blur-sm whitespace-nowrap">
+        <span class="h-1.5 w-1.5 rounded-full bg-brand-400/80"></span>
+        {item}
+      </div>
+    ))}
+  </div>
+</div>
